@@ -1,0 +1,125 @@
+{% extends 'layout.html' %}
+
+{% block conent %}
+    <div class="container">
+    <form action="/audit_asset/" method="post" style="color: white">
+       <table id="select" class="table table-condensed table-bordered table-hover">
+           <thead>
+                <tr style="height:32px">
+                    <th>主机名</th>
+                    <th>品牌</th>
+                    <th>设备型号</th>
+                    <th>操作系统</th>
+                    <th>IP地址</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in result %}
+                    {% if i.operation == 'reject' %}
+                        <tr style="background-color: #ddd">
+                            <td class="td" id="hostname">{{ i.hostname }}</td>
+                            <td class="td">{{ i.Brand }}</td>
+                            <td class="td">{{ i.Model }}</td>
+                            <td class="td">{{ i.os_version }}</td>
+                            <td class="td">192.168.1.1</td>
+                            <td>
+                                <button type="button"  class="btn btn-default btn-sm" disabled="disabled">已拒绝</button>  <a control="删除" href="" data-toggle="modal" data-target=".sub-confirm" style="color: #0d8ddb" class="glyphicon glyphicon-trash remove"></a>
+                                <input id="hostname" name="hostname" type="checkbox" value="{{ i.hostname }}" style="display: none">
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td class="td" id="hostname">{{ i.hostname }}</td>
+                            <td class="td">{{ i.Brand }}</td>
+                            <td class="td">{{ i.Model }}</td>
+                            <td class="td">{{ i.os_version }}</td>
+                            <td class="td" id="ipaddress">{% for k,v in i.IpAdress.items %}{{ k }}:{{ v }}      {% endfor %}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm approve" placeholder=".button-sm" data-toggle="modal" data-target=".sub-content">同意</button>   <button type="button" control="拒绝"  class="btn btn-danger btn-sm reject" placeholder=".button-sm" data-toggle="modal" data-target=".sub-confirm">拒绝</button>
+                                <input id="hostname" name="hostname" type="checkbox" value="{{ i.hostname }}" style="display: none">
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+    </div>
+{% endblock %}
+{% block model %}
+
+    <div id="Modal" class="modal fade sub-content" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="asset">
+                        <label for="recipient-name" class="control-label">DeviceType</label>
+                        <select class="form-control" id="AssetType" name="AssetType">
+                            <option value="1">服务器</option>
+                            <option value="2">网络及存储</option>
+                            <option value="3">虚拟机</option>
+                            <option value="3">云主机</option>
+                        </select>
+                        <label for="recipient-name" class="control-label">所属IDC:</label>
+                        <select id="idc" class="form-control" name="idc">
+                        </select>
+                        <label for="message-text" class="control-label">机柜编号:</label>
+                        <select id="cabinet" class="form-control" name="Cabinet">
+                        </select>
+                        <label for="recipient-name" class="control-label">状态:</label>
+                        <select class="form-control" id="DeviceStatus" name="DeviceStatus">
+                            <option value="1">待投产</option>
+                            <option value="2" selected="selected">在线:</option>
+                            <option value="3">离线</option>
+                            <option value="4">下架</option>
+                        </select>
+                        <label for="message-text" class="control-label">机位:</label>
+                        <div id="position" class="input-group-sm spinner-sm">
+                            <input name="position" placeholder="" required type="number" value="48" min="0" max="48"/>&nbsp;U位
+                        </div>
+                        <label for="message-text" class="control-label">设备高度:</label>
+                        <div id="position" class="input-group spinner">
+                            <input name="form" placeholder="" required type="number" value="1" min="0" max="8"/>&nbsp;U
+                        </div>
+                        <select id="approve_hostname" name="Approve_hostname" style="display: none">
+                        </select>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="sub" type="button" class="btn btn-primary btn-success">Send message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade sub-confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+ <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+{#    <h4 class="modal-title" id="exampleModalLabel">确认框</h4>#}
+   </div>
+   <div class="modal-body">
+    <form>
+    <div class="form-group">
+      <label for="message-text" id="confirm" class="control-label"></label>
+     </div>
+    </form>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+    <button type="button" id="AuditDelete" class="btn btn-primary" data-dismiss="modal">确认</button>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="/static/jquery.min(1).js"></script>
+<script src="/static/message.js"></script>
+<script src="/static/90e6bfe9261e70b6.js"></script>
+
+{% endblock %}
+

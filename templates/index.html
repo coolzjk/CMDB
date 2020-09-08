@@ -1,0 +1,242 @@
+{% extends 'layout.html' %}
+{% block css %}
+    <link rel="stylesheet" href="https://demo.opendevops.cn/css/app.3b516d10.css">
+    <link rel="stylesheet" href="https://demo.opendevops.cn/css/chunk-vendors.09f7874b.css">
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+{% endblock %}
+{% block conent %}
+    <div>
+        <div id="container1" style="height: 300px;width: 50%;float: left"></div>
+        <div id="container2" style="height: 300px;width: 50%;float: left"></div><div style="width: 50%;float: left;text-align: center"><b>计算资源类型占比</b></div><div style="width: 50%;float: left;text-align: center"><b>各业务线计算资源占比</b></div>
+    </div>
+    <div id="container" style="height: 200px;width:1200px;margin-left: -40px;margin-top: 300px"></div><div style="width: 100%;text-align: center"><b>每日监控报警热力图</b></div>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+       function map3() {
+           var dom = document.getElementById("container2");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    show:false,
+                    orient: 'vertical',
+                    left: 10,
+                    data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
+                },
+                series: [
+                    {
+                        name: '业务线',
+                        type: 'pie',
+                        selectedMode: 'single',
+                        radius: [0, '30%'],
+
+                        label: {
+                            position: 'inner'
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            {value: 41, name: '营帐'},
+{#                            {value: 335, name: '营帐', selected: true},#}
+                            {value: 218, name: '支撑'},
+                            {value: 76, name: '旺财'}
+                        ]
+                    },
+                    {
+                        name: '资产数量',
+                        type: 'pie',
+                        radius: ['40%', '55%'],
+                        label: {
+                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                            backgroundColor: '#eee',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            // shadowBlur:3,
+                            // shadowOffsetX: 2,
+                            // shadowOffsetY: 2,
+                            // shadowColor: '#999',
+                            // padding: [0, 7],
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                // abg: {
+                                //     backgroundColor: '#333',
+                                //     width: '100%',
+                                //     align: 'right',
+                                //     height: 22,
+                                //     borderRadius: [4, 4, 0, 0]
+                                // },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 16,
+                                    lineHeight: 33
+                                },
+                                per: {
+                                    color: '#eee',
+                                    backgroundColor: '#334455',
+                                    padding: [2, 4],
+                                    borderRadius: 2
+                                }
+                            }
+                        },
+                        data: [
+                            {value: 41, name: '营帐'},
+                            {value: 218, name: '支撑'},
+                            {value: 76, name: '旺财'},
+                            /*{value: 135, name: '视频广告'},
+                            {value: 1048, name: '百度'},
+                            {value: 251, name: '谷歌'},
+                            {value: 147, name: '必应'},
+                            {value: 102, name: '其他'}//可以多于上面的业务线指标，我这里和业务线里一样多指标参数*/
+                        ]
+                    }
+                ]
+            };;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+       }
+       function map2() {
+           var dom = document.getElementById("container1");
+            var myChart = echarts.init(dom);
+            var app = {};
+           option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['Docker', 'VM', 'Physical']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value'
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['开发', '预生产', '压测', '生产']
+                    },
+                    series: [
+                        {
+                            name: 'Physical',
+                            type: 'bar',
+                            stack: '总量',
+                            label: {
+                                show: true,
+                                position: 'insideRight'
+                            },
+                            data: [49, 49, 59, 178, 390, 330, 320]
+                        },
+                        {
+                            name: 'Docker',
+                            type: 'bar',
+                            stack: '总量',
+                            label: {
+                                show: true,
+                                position: 'insideRight'
+                            },
+                            data: [120, 30, 22, 67, 90, 230, 210]
+                        },
+                        {
+                            name: 'VM',
+                            type: 'bar',
+                            stack: '总量',
+                            label: {
+                                show: true,
+                                position: 'insideRight'
+                            },
+                            data: [52, 32, 45, 62, 290, 330, 310]
+                        },
+{#                        {#}
+{#                            name: '视频广告',#}
+{#                            type: 'bar',#}
+{#                            stack: '总量',#}
+{#                            label: {#}
+{#                                show: true,#}
+{#                                position: 'insideRight'#}
+{#                            },#}
+{#                            data: [150, 212, 201, 154, 190, 330, 410]#}
+{#                        },#}
+{#                        {#}
+{#                            name: '搜索引擎',#}
+{#                            type: 'bar',#}
+{#                            stack: '总量',#}
+{#                            label: {#}
+{#                                show: true,#}
+{#                                position: 'insideRight'#}
+{#                            },#}
+{#                            data: [820, 832, 901, 934, 1290, 1330, 1320]#}
+{#                        }#}
+                    ]
+                };;
+                if (option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+       }//map2 end
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        function getVirtulData(year) {
+            year = year || '2020';
+            var date = +echarts.number.parseDate(year + '-01-01');
+            var end = +echarts.number.parseDate(year + '-{{ today }}');
+            var dayTime = 3600 * 24 * 1000;
+            var data = [];
+            for (var time = date; time <= end; time += dayTime) {
+                data.push([
+                    echarts.format.formatTime('yyyy-MM-dd', time),
+                    Math.floor(Math.random() * 10000)
+                ]);
+            }
+            return data;
+        }
+
+        myChart.setOption({
+            visualMap: {
+                show: false,
+                min: 0,
+                max: 10000
+            },
+            calendar: {
+                range: '2020'
+            },
+            series: {
+                type: 'heatmap',
+                width: 500,
+                coordinateSystem: 'calendar',
+                data: getVirtulData(2020)
+            }
+        });
+map2()
+map3()
+       </script>
+{% endblock %}

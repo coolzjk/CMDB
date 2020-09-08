@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+
+{% block conent %}
+    <div id="Datacenter" class="container">
+        <div class="table">
+            <button class="btn btn-primary approve" data-toggle="modal" data-target=".bs-example-modal-sm">新增</button>
+            <table id="select" class="table table-condensed table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>楼层</th>
+                        <th>地址</th>
+                        <th>机柜数量</th>
+                        <th style="width: 15%">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in datacenter %}
+                        <tr>
+                         <td id="id_num" style="display: none">{{ i.id }}</td>
+                            <td id="status" style="display: none"></td>
+                            <td id="name" class="text"><a href="/dcroom/?nid={{ i.id }}">{{ i.name }}</a></td>
+                            <td id="floor" class="text">{{ i.floor }}</td>
+                            <td id="address" class="text">{{ i.address }}</td>
+                            <td id="RackNum" ></div>
+                            <div class="RackNumber" style="display: none">{{ i.RackNum }}</div></td>
+                            <td id="console">
+                                <button id="edit" class="btn btn-primary edit">编辑</button>
+                                <button class="btn btn-primary delete">删除</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block model %}
+    <div id="Modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="IdcData">
+                        <label for="recipient-name" class="control-label">名称</label>
+                        <div ><input name="name"></div>
+                        <label for="message-text" class="control-label">楼层</label>
+                        <div><input name="floor"></div>
+                        <label for="message-text" class="control-label">地址</label>
+                        <div><input name="address"></div>
+                        <label for="message-text" class="control-label">机柜数量</label>
+                        <div>行数:<input name="Y" style="width: 40px"></div><div>列数:<input name="X" style="width: 40px"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="subLocation" type="button" class="btn btn-primary">Send message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/static/message.js"></script>
+    <script src="/static/daefdb2f70ff2507.js"></script>
+{% endblock %}
+<!-- 编辑保存按钮变换及表格内容变为input的JS逻辑整理。
+
+设定一个变量为表格
+id为select的表格里查找butt类绑定点击事件
+如果编辑按钮为edit类
+ 表格的每个标签绑定一个函数
+ 判断标签如果为text的类
+ 替换为Input
+ 否则判断标签如果为button
+   按钮文字改为保存
+   删除btn-primary edit类
+   增加btn-warning editing类
+如果编辑按钮为editing类
+ 表格的每个标签绑定一个函数
+ 判断标签如果为text的类
+   设定orgin_value变量查找每个标签里的Input里的值，如果有的话
+   每个绑定事件的标签设定html为上面orgin_value的值
+ 否则判断标签如果为button类
+   按钮文字改为编辑
+   增加btn-primary edit类
+   删除btn-warning editing类
+---------------------
+以上为可用新逻辑
+以下为旧逻辑
+-----------------------
+id为select的表格里查找butt类绑定点击事件
+如果$(this)为edit类，表示为编辑按钮
+设定一个变量为找到这个按钮的父父标签为表格
+给这个表格的每个标签绑定一个函数
+  如果这个标签为text类
+  换为input框
+  删除text类
+  按钮文字改为保存
+  删除btn-primary edit类
+  增加btn-warning editing类
+
+否则
+  变量current_text为找到这个按钮的父父标签为表格
+    给这个表格的每个标签绑定一个函数
+    设定orgin_value变量查找每个标签里的Input里的值，如果有的话
+    每个绑定事件的标签设定html为上面orgin_value的值
+    每个标签增加text类
+    current_text（表格）内查找id="edit"设置文字为编辑
+    current_text（表格）内查找class=butt的添加类"btn-primary edit"
+    current_text（表格）内查找class=butt的删除类'btn-warning editing'
+    绑定事件的每个标签的父标签删除类'text'
+-->
+</html>

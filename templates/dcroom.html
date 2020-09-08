@@ -1,0 +1,136 @@
+{% extends 'layout.html' %}
+{% block css %}
+{% endblock %}
+{% block conent %}
+
+<div id="main">
+    <div class="grid-room">
+                 <span class="racks_view_controls">
+            <span class="mini_toggle active" id="toggle_grid">
+                {% for idc in IDCinfo %}
+                    {{ idc.name }}
+                    <div class="sep">{{ idc.RackNum }}</div>
+                    {% for order in idc.r_i.all %}
+                        <div class="data" style="display: none">{{ order.cabinet_num }}/{{  order.cabinet_order }}</div>
+                    {% endfor %}
+                {% endfor %}
+            </span>
+         </span>
+         <ul id="x" class="indexes indexes-x">
+         </ul>
+         <ul id="y" class="indexes indexes-y">
+         </ul>
+          <div class="racks_add" >
+         </div>
+</div>
+    <div id="content"></div>
+</div>
+<div class="items_add"></div>
+{% endblock %}
+
+{% block model %}
+<div id="Modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="Data">
+                        <label for="recipient-name" class="control-label">机柜编号</label>
+                        <div><input name="RackNum"></div>
+                        <label for="message-text" class="control-label">机位数</label>
+                        <div class="input-group-sm spinner-sm">
+                            <input name="RackSpace" placeholder="" required type="number" value="48" min="0" max="48"/>&nbsp;U位
+                        </div>
+                        <div>
+                        <input class="cabinet_order" name="cabinet_order" style="display: none">
+                            {% for ids in nid %}
+                            <input class="dc_id" name="idc_id" value="{{ ids }}" style="display: none">
+                            {% endfor %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="sub" type="button" class="btn btn-primary">Send message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="Modal" class="modal fade in manual-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        请选择要添加的设备类型
+                    </h4>
+                </div>
+                <div class="modal-body" id="tanchu">
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover" id="btable">
+                            <thead>
+                            </thead>
+                            <tbody id="tableble">
+                                <form id="SubAsset">
+                                    <select name="ManualAdd" style="display: none"><option value="True"></option></select>
+                                    <tr>
+                                        <td id="chebox0"><input name="AssetType" type="radio" value="1"></td>
+                                        <td>服务器</td>
+                                        <td id="chebox1"><input name="AssetType" type="radio" value="2"></td>
+                                        <td>网络设备</td>
+                                        <td id="chebox2"><input name="AssetType" type="radio" value="3"></td>
+                                        <td>存储</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="chebox0"><input name="RackmountSize" type="radio" value="1"></td>
+                                        <td>1U</td>
+                                        <td id="chebox1"><input name="RackmountSize" type="radio" value="2"></td>
+                                        <td>2U</td>
+                                        <td id="chebox2"><input name="RackmountSize" type="radio" value="4"></td>
+                                        <td>4U</td>
+                                        <td id="chebox2"><input name="RackmountSize" type="radio" value="8"></td>
+                                        <td>8U</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="chebox0"><input name="DeviceStatus" type="radio" value="1"></td>
+                                        <td>待投产</td>
+                                        <td id="chebox1"><input name="DeviceStatus" type="radio" value="2"></td>
+                                        <td>在线</td>
+                                        <td id="chebox2"><input name="DeviceStatus" type="radio" value="3"></td>
+                                        <td>关机</td>
+                                        <td id="chebox2"><input name="DeviceStatus" type="radio" value="4"></td>
+                                        <td>待下架</td>
+                                    </tr>
+                                    <tr>
+                                        资产编号:<input name="Asset_num">
+                                        <select id="idc"name="idc" style="display: none">
+                                            {% for ids in nid %}
+                                                <option value={{ ids }}></option>
+                                            {% endfor %}
+                                        </select>
+                                        <select id="cabinet" name="Cabinet" style="display: none"></select>
+                                        <select id="position" name="Postion" style="display: none"></select>
+                                        <select id="operator" name="ManualAdd" style="display: none"></select>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+                    <button id="sub_asset" class="btn btn-primary" type="button">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+<script src="/static/jquery.min(1).js"></script>
+<script src="/static/message.js"></script>
+<script src="/static/f1bd5e6126114c33.js"></script>
+{% endblock %}
+</html>

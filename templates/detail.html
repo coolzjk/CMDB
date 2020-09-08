@@ -1,0 +1,125 @@
+{% extends 'layout.html' %}
+{% block js %}
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+{% endblock %}
+{% block conent %}
+ {% for i in data %}
+     <div class="main-container">
+                <div class="card-head">
+                    <p id="head">业务</p>
+                </div>
+                <div class="card-body">
+                    <div class="card-row">
+                        <div class="Graph">
+                            <div class="term"><p>所属IDC</p></div>
+                            <div class="val"><p>{{ i.asset.cabinet_num.IDC.name }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>所属机柜</p></div>
+                            <div class="val"><p>{{ i.asset.cabinet_num.cabinet_num }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>设备类型</p></div>
+                            <div class="val"><p>{{ i.asset.get_TypeId_display }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>状态</p></div>
+                            <div class="val"><p>{{ i.asset.get_device_status_display }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>环境</p></div>
+                            <div class="val"><p></p></div>
+                        </div>
+{#                        问题就在下面这个div把head挤到边上了。#}
+                        <div class="Graph">
+                            <div class="term"><p>负责人</p></div>
+                            <div class="val"><p>{{ i.asset.administrator }}</p></div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="card-head">
+                    <p id="head">硬件</p>
+                </div>
+                <div class="card-body">
+                    <div class="card-row-max">
+                        <div class="Graph">
+                            <div class="term"><p>序列号</p></div>
+                            <div class="val"><p>{{ i.sn }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>CPU型号</p></div>
+                            <div class="val"><p>{{ i.cpu_model }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>CPU物理核数</p></div>
+                            <div class="val"><p>{{ i.cpu_physical_count }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>CPU逻辑核数</p></div>
+                            <div class="val"><p>{{ i.cpu_count }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>内存大小</p></div>
+                            <div class="val"><p>{{ i.MemSize }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>内存数量</p></div>
+                            <div class="val"><p>{{ i.MemNumber }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>磁盘空间</p></div>
+                            <div class="val"><p>{{ i.DiskInfo }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>RAID</p></div>
+                            <div class="val"><p></p></div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="card-head">
+                    <p id="head">系统</p>
+                </div>
+                <div class="card-body">
+                    <div class="card-row">
+                        <div class="Graph">
+                            <div class="term"><p>主机名</p></div>
+                            <div class="val"><p>{{ i.hostname }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>IP地址</p></div>
+                            {% for i in address %}
+                                <div class="val"><p>{{ i }}</p></div>
+                            {% endfor %}
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>操作系统版本</p></div>
+                            <div class="val"><p>{{ i.os_version }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>内核版本</p></div>
+                            <div class="val"><p></p></div>
+                        </div>
+                    </div>
+                </div>
+                  <div class="card-head">
+                    <p id="head">其他</p>
+                </div>
+                <div class="card-body">
+                    <div class="card-row">
+                        <div class="Graph">
+                            <div class="term"><p>品牌型号</p></div>
+                            <div class="val"><p>{{ i.manufacturer }}{{ i.model }}</p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>采购日期</p></div>
+                            <div class="val"><p></p></div>
+                        </div>
+                        <div class="Graph">
+                            <div class="term"><p>保修结束日期</p></div>
+                            <div class="val"><p></p></div>
+                        </div>
+                    </div>
+                </div>
+     </div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,21 @@
+/*audit.html*/
+.container{padding: 10px;color: black;width: 100%}
+.td,th{vertical-align: middle!important;color: black;}
+#ipaddress{width: 20px}
+/*details.html*/
+.main-container{padding-top: 10px;width: 900px;}
+.card-head{width: 100%;height: 47px;background-color: #fafafa;border: solid 1px #e8e8e8}
+.card-head #head{margin-left:10px;height:100%; line-height:47px; width:100px; overflow:hidden;;color: rgba(0,0,0,.65)}
+.card-row{width: 900px;height:210px;padding:10px 0px 0px 20px;border: solid 1px #e8e8e8}
+.card-row-max{width: 900px;height:310px;padding:10px 0px 0px 20px;border: solid 1px #e8e8e8}
+.term{background-color: #e1eef6;height: 25px;}
+.Graph{width:280px;height:100px;float: left;padding: 0px 10px 10px 0px}
+.card-row p{line-height:25px;overflow:hidden;color: rgba(0,0,0,.65);padding-left: 5px}
+.card-row-max p{line-height:25px;overflow:hidden;color: rgba(0,0,0,.65);padding-left: 5px}
+/*dcroom.html*/
+.grid-room{float: left;width: 100%;text-align: center}
+#content{float: left}
+.block{display: block;width: 40px;height: 40px;float:right;position: relative}div.block{text-align:center; line-height: 40px}.sep{display: none}
+/*popover.html*/
+@font-face {font-family: test;src; url("font/fontawesome-webfont.ttf");}
+.test:before{content:'\f067';font-family: test;}

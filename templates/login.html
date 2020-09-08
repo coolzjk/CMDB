@@ -1,0 +1,27 @@
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="/static/login.css"/>
+{% endblock %}
+
+
+{% block conent %}
+<body align="center" class="login">
+    <div id="content-main">
+        <div class="head"> 登录CMDB系统</div>
+        <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+            <div class="form-row">
+                {{ userinfo.username.errors }}
+                {{ userinfo.username.label_tag }} {{ userinfo.username }}
+            </div>
+            <div class="form-row">
+                {{ userinfo.password.errors }}
+                {{ userinfo.password.label_tag }} {{ userinfo.password }}
+                <input type="hidden" name="next" value="{{ next }}" />
+            </div>
+            <div class="submit-row">
+                <label>&nbsp;</label><input type="submit" value="Log in" />
+            </div>
+        </form>
+        </div>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'layout.html' %}
+{% block css %}
+
+{% endblock %}
+{% block conent %}
+    <div id="SearchBox" style="padding-bottom: 20px">
+    <form action="/search/" method="post">
+    <div class="input-group" style="width: 70%;margin:0 auto">
+        <span  class="input-group-btn">
+          <a id="add" class="btn btn-default no-radius" ><i class="fa fa-plus-square" ></i></i></a>
+            <a id="del" style="display: none" class="btn btn-default no-radius" ><i class="fa fa-minus-square" ></i></a>
+        </span>
+        <select id="SearchField" style="width: 110px;display: none" class="form-control" name="Searchindex">Searchindex</select>
+        {{ AssetSearchFields.TypeId }}{{ AssetSearchFields.device_status }}
+        <input style="width: 400px;" type="text" name="q" class="form-control" placeholder="Search...">
+        <span style="display: inline-block" class="input-group-btn">
+          <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+          </button>
+        </span>
+    </div>
+    </div>
+    </form>
+        {% if ServerInfo or NetworkDeviceInfo %}
+        <table class="table table-condensed table-bordered table-hover">
+            <tr>
+                <th>选择</th>
+                <th>资产类型</th>
+                <th>主机名</th>
+                <th>设备序列号</th>
+                <th>IDC</th>
+                <th>机柜号</th>
+                <th>位置</th>
+                <th>资产状态</th>
+                <th>选项</th>
+            </tr>
+                {% for i in ServerInfo.object_list %}
+                <tr>
+                    <td><input id="nid" type="checkbox" name="DeviceID" value="{{ i.id }}" ></td>
+                    <td>{{ i.asset.get_TypeId_display}}</td>
+                    <td class="edit" edit="true" type="input">{{ i.hostname }}</td>
+                    <td>{{ i.sn }}</td>
+                    <td>{{ i.asset.cabinet_num.IDC.name }}</td>
+                    <td>{{ i.asset.cabinet_num }}</td>
+                    <td class="edit" edit="true" type="input">{{ i.asset.position }}</td>
+                    <td>{{ i.asset.get_device_status_display }}</td>
+                    <td><a href="/detail/?nid={{ i.id }}">详细信息</a> <a control="删除" href="" data-toggle="modal" data-target=".sub-confirm" style="color: #0d8ddb" class="glyphicon glyphicon-trash removee"></a></td>
+                </tr>
+                {% endfor %}
+        {% else %}
+            <div>NO DATA</div>
+        {% endif %}
+        </table>
+    </div>
+    <ul class="pagination">
+        {# 如果当前页还有上一页 #}
+        {% if ServerInfo.has_previous %}
+            <li>
+                {# 点击a标签，跳转到上一页链接 ?index  为地址后面拼接的参数 #}
+                {% if wd %}{% if action %}<a href="?wd={{ wd }}&{{ action }}&page={{ServerInfo.previous_page_number}}">上一页</a>{% else %}<a href="?wd={{ wd }}&page={{ServerInfo.previous_page_number}}">上一页</a>{% endif %}{% else %}<a href="?page={{ServerInfo.previous_page_number}}">上一页</a>{% endif %}
+            </li>
+        {% else %}
+            {# 如果没有上一页， 则上一页按钮不可点击 #}
+            <li class="disabled">
+                <a href="#">上一页</a>
+            </li>
+        {% endif %}
+
+        {% for pg in ServerInfo.paginator.page_range %}
+            {% if ServerInfo.number == pg %}
+                {% if wd %}
+                    {% if action %}
+                        <li class="active"><a href="?wd={{ wd }}&{{ action }}&page={{ pg }}">{{ pg }}</a></li>
+                    {% else %}
+                        <li class="active"><a href="?wd={{ wd }}&page={{ pg }}">{{ pg }}</a></li>
+                    {% endif %}
+                {% else %}
+                    <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+                {% endif %}
+            {% else %}
+                {% if wd %}
+                    {% if action %}
+                        <li><a href="?wd={{ wd }}&{{ action }}&page={{ pg }}">{{ pg }}</a> </li>
+                    {% else %}
+                        <li><a href="?wd={{ wd }}&page={{ pg }}">{{ pg }}</a> </li>
+                    {% endif %}
+                {% else %}
+                    {% if action %}
+                        <li><a href="?{{ action }}&page={{ pg }}">{{ pg }}</a> </li>
+                    {% else %}
+                        <li><a href="?page={{ pg }}">{{ pg }}</a> </li>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if ServerInfo.has_next %}
+            <li>
+                {% if wd %}
+                    {% if action %}
+                        <a href="?wd={{ wd }}&{{ action }}&page={{ServerInfo.next_page_number}}">下一页</a>
+                    {% else %}
+                        <a href="?wd={{ wd }}&page={{ServerInfo.next_page_number}}">下一页</a>
+                    {% endif %}
+                {% else %}
+                    {% if action %}
+                        <a href="?{{ action }}&page={{ServerInfo.next_page_number}}">下一页</a>
+                    {% else %}
+                        <a href="?page={{ServerInfo.next_page_number}}">下一页</a>
+                    {% endif %}
+                {% endif %}
+            </li>
+        {% else %}
+        <li class="disabled">
+            <a href="#">下一页</a>
+        </li>
+        {% endif %}
+    </ul>
+{% endblock %}
+{% block model %}
+    <div class="modal fade sub-confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+ <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+   </div>
+   <div class="modal-body">
+    <form>
+    <div class="form-group">
+      <label for="message-text" id="confirm" class="control-label"></label>
+     </div>
+    </form>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+    <button type="button" id="DelAsset" class="btn btn-success" data-dismiss="modal">确认</button>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock %}
+{% block js %}
+    <script src="/static/jquery.min(1).js"></script>
+    <script src="/static/message.js"></script>
+    <script src="/static/45e31a2159c1bfeb.js"></script>
+{% endblock %}
