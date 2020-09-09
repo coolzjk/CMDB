@@ -3,7 +3,7 @@ This is a auto collect hardware info CMDB system,build by Python Django.
 
 # 功能介绍
 利用Django auth及permission模块实现功能权限管理.  
-client程序把收集到的系统信息通过requests模块提交到服务端ap  
+client程序把收集到的系统信息通过requests模块提交到服务端api.  
 对采集到的资产信息进行初次审核，通过后如有变化自动更新.  
 Server端审核通过后可以指定设备位置显示在相应的机柜U位.  
 
