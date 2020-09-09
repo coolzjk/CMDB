@@ -15,7 +15,7 @@ djangorestframework 3.9.4
 
 # 服务端安装
 服务器操作系统版本要求 centos7.4
-git clone
+git clone http://git@github.com:coolzjk/CMDB.git
 通过Django makemigration创建数据库表结构
 通过"python manage.py shell"修改admin密码
 python manager.py runserver 0.0.0.0:<port>
